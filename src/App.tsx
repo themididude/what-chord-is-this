@@ -8,11 +8,13 @@ import type { GuitarString } from "./utils/guitarUtils";
 import { DEFAULT_TUNING } from "./tunings";
 import "./App.css";
 import { PianoKeys } from "./PianoKeys";
+import { About } from './About'
+
 
 type Mode = "notes" | "guitar" | "piano";
 
 function App() {
-  const [mode, setMode] = useState<Mode>("notes");
+  const [mode, setMode] = useState<Mode>("guitar");
   const [selected, setSelected] = useState<Note[]>([]);
   const [pianoSelected, setPianoSelected] = useState<string[]>([]);
   const [strings, setStrings] = useState<GuitarString[]>(makeEmptyStrings());
@@ -47,22 +49,22 @@ function App() {
 
       <div className="mode-selector">
         <button
-          className={mode === "notes" ? "mode-btn active" : "mode-btn"}
-          onClick={() => setMode("notes")}
-        >
-          Note Mode
-        </button>
-        <button
           className={mode === "guitar" ? "mode-btn active" : "mode-btn"}
           onClick={() => setMode("guitar")}
         >
-          Guitar Mode
+          Guitar 
         </button>
         <button
           className={mode === "piano" ? "mode-btn active" : "mode-btn"}
           onClick={() => setMode("piano")}
         >
           Piano
+        </button>
+         <button
+          className={mode === "notes" ? "mode-btn active" : "mode-btn"}
+          onClick={() => setMode("notes")}
+        >
+          Note 
         </button>
       </div>
 
@@ -116,6 +118,7 @@ function App() {
           )}
         </>
       )}
+      <About />
     </div>
   );
 }

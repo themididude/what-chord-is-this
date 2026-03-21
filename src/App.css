@@ -307,3 +307,72 @@ h1{
 .black-key.active .key-label-black {
   color: #fff;
 }
+
+/* ABOUT ME STUFF */
+
+.about-wrap {
+  margin-top: 3rem;
+  border-top: 1px solid #222;
+  padding-top: 1rem;
+}
+
+.about-btn {
+  background: none;
+  border: none;
+  color: #555;
+  font-size: 13px;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.15s;
+}
+
+.about-btn:hover {
+  color: #888;
+}
+
+.about-content {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.about-text {
+  font-size: 14px;
+  color: #666;
+  line-height: 1.7;
+}
+
+.about-socials {
+  display: flex;
+  gap: 16px;
+}
+
+.about-socials a {
+  font-size: 13px;
+  color: #534AB7;
+  text-decoration: none;
+}
+
+.about-socials a:hover {
+  color: #7F77DD;
+}
+
+.wavy-wrap {
+  display: inline-flex;
+}
+
+.wavy {
+  display: inline-block;
+  position: relative;
+  animation-name: wavy;
+  animation-duration: 1.3s;
+  animation-timing-function: ease;
+  animation-iteration-count: infinite;
+}
+
+@keyframes wavy {
+  0%   { top: 0px; }
+  50%  { top: -8px; }
+  100% { top: 0px; }
+}
