@@ -38,6 +38,8 @@ function App() {
       : getNotesFromStrings(strings, DEFAULT_TUNING, startFret);
 
   const chord = identifyChord(activeNotes);
+  
+  console.log('notas activas:', activeNotes)
 
   return (
     <div className="app">

@@ -4,7 +4,7 @@ export interface Tuning {
 }
 
 export const TUNINGS: Tuning[] = [
-  { name: 'Standard', notes: ['E', 'B', 'G', 'D', 'A', 'E'] },
+  { name: 'Standard', notes: ['E', 'A', 'D', 'G', 'B', 'E'] },
 ]
 
 export const DEFAULT_TUNING = TUNINGS[0]

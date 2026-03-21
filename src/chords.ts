@@ -53,6 +53,8 @@ export const CHORD_TYPES: ChordType[] = [               ///escencialmente asigna
   { suffix: '7#11',   intervals: [0, 4, 6, 7, 10] },
 
   // trecenas
+  { suffix: '7(13)',  intervals: [0, 4, 7, 9, 10] },
+  { suffix: 'm7(13)', intervals: [0, 3, 7, 9, 10] },
   { suffix: '13',     intervals: [0, 2, 4, 5, 7, 9, 10] },
   { suffix: 'maj13',  intervals: [0, 2, 4, 5, 7, 9, 11] },
   { suffix: 'm13',    intervals: [0, 2, 3, 5, 7, 9, 10] },
@@ -71,6 +73,7 @@ export const CHORD_TYPES: ChordType[] = [               ///escencialmente asigna
 ]
 
 export interface chordResult{
+    ///ejemplos
     name: string      /// Cmaj9
     root: Note       /// C
     suffix: string  //maj9
@@ -86,13 +89,20 @@ export function identifyChord(selectedNotes: Note[]): chordResult | null {
     (a, b) => b.intervals.length - a.intervals.length
   )
 
+  let bestMatch: chordResult | null = null
+  let bestScore = 0
+
   for (const root of semitones) {
     for (const chordType of sorted) {
       const required = chordType.intervals.map(i => (root + i) % 12)
-      const allPresent = required.every(r => semitones.includes(r))
-      const noExtra = semitones.every(s => required.includes(s))
-      if (allPresent && noExtra) {
-        return {
+      const matched = semitones.filter(s => required.includes(s)).length
+      const extra = semitones.filter(s => !required.includes(s)).length
+      const coverage = matched / required.length
+      const score = coverage - extra * 0.5
+
+      if (matched >= 2 && coverage >= 0.6 && extra === 0 && score > bestScore) {
+        bestScore = score
+        bestMatch = {
           name: NOTES[root] + chordType.suffix,
           root: NOTES[root],
           suffix: chordType.suffix,
@@ -102,5 +112,5 @@ export function identifyChord(selectedNotes: Note[]): chordResult | null {
     }
   }
 
-  return null
+  return bestMatch
 }

@@ -32,7 +32,7 @@ export function GuitarNeck({ strings, tuning, startFret, onStringsChange, onStar
     if (current.state === 'pressed' && current.fret === fret) {
       updated[stringIndex] = unpressString()
     } else {
-      updated[stringIndex] = pressString(fret) 
+      updated[stringIndex] = pressString(fret)
     }
     onStringsChange(updated)
   }
@@ -56,34 +56,37 @@ export function GuitarNeck({ strings, tuning, startFret, onStringsChange, onStar
       </div>
 
       <div className="neck-grid">
-        {strings.map((gs, si) => (
-          <div key={si} className="string-row">
-            <span className="open-note">{tuning.notes[si]}</span>
+        {[...strings].reverse().map((gs, reversedIndex) => {
+          const si = strings.length - 1 - reversedIndex
+          return (
+            <div key={si} className="string-row">
+              <span className="open-note">{tuning.notes[si]}</span>
 
-            <button
-              className={`string-indicator ${gs.state}`}
-              onClick={() => handleIndicatorTap(si)}
-            >
-              {getIndicatorLabel(si)}
-            </button>
+              <button
+                className={`string-indicator ${gs.state}`}
+                onClick={() => handleIndicatorTap(si)}
+              >
+                {getIndicatorLabel(si)}
+              </button>
 
-            <div className="frets">
-              {Array.from({ length: FRETS }, (_, fi) => {
-                const fretNum = fi + 1
-                const isActive = gs.state === 'pressed' && gs.fret === fretNum
-                return (
-                  <button
-                    key={fi}
-                    className={`fret-cell ${isActive ? 'active' : ''} ${gs.state === 'muted' ? 'disabled' : ''}`}
-                    onClick={() => handleFretTap(si, fretNum)}
-                  >
-                    {isActive && <span className="fret-dot" />}
-                  </button>
-                )
-              })}
+              <div className="frets">
+                {Array.from({ length: FRETS }, (_, fi) => {
+                  const fretNum = fi + 1
+                  const isActive = gs.state === 'pressed' && gs.fret === fretNum
+                  return (
+                    <button
+                      key={fi}
+                      className={`fret-cell ${isActive ? 'active' : ''} ${gs.state === 'muted' ? 'disabled' : ''}`}
+                      onClick={() => handleFretTap(si, fretNum)}
+                    >
+                      {isActive && <span className="fret-dot" />}
+                    </button>
+                  )
+                })}
+              </div>
             </div>
-          </div>
-        ))}
+          )
+        })}
       </div>
     </div>
   )
