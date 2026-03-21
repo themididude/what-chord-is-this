@@ -1,0 +1,106 @@
+export const NOTES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'] 
+export type Note = typeof NOTES[number]
+
+export interface ChordType {
+  suffix: string
+  intervals: number[]
+}
+
+export const CHORD_TYPES: ChordType[] = [               ///escencialmente asignando los numeros con respecto de la root a un suffix
+  // básicos
+  { suffix: '',       intervals: [0, 4, 7] },
+  { suffix: 'm',      intervals: [0, 3, 7] },
+  { suffix: '5',      intervals: [0, 7] },
+  { suffix: 'dim',    intervals: [0, 3, 6] },
+  { suffix: 'aug',    intervals: [0, 4, 8] },
+  { suffix: 'sus2',   intervals: [0, 2, 7] },
+  { suffix: 'sus4',   intervals: [0, 5, 7] },
+
+  // séptimas
+  { suffix: 'maj7',   intervals: [0, 4, 7, 11] },
+  { suffix: '7',      intervals: [0, 4, 7, 10] },
+  { suffix: 'm7',     intervals: [0, 3, 7, 10] },
+  { suffix: 'mMaj7',  intervals: [0, 3, 7, 11] },
+  { suffix: 'dim7',   intervals: [0, 3, 6, 9] },
+  { suffix: 'm7b5',   intervals: [0, 3, 6, 10] },
+  { suffix: 'aug7',   intervals: [0, 4, 8, 10] },
+  { suffix: 'augMaj7',intervals: [0, 4, 8, 11] },
+  { suffix: '7sus4',  intervals: [0, 5, 7, 10] },
+
+  // sextas
+  { suffix: '6',      intervals: [0, 4, 7, 9] },
+  { suffix: 'm6',     intervals: [0, 3, 7, 9] },
+  { suffix: '6/9',    intervals: [0, 2, 4, 7, 9] },
+
+  // novenas
+  { suffix: 'add9',   intervals: [0, 2, 4, 7] },
+  { suffix: 'madd9',  intervals: [0, 2, 3, 7] },
+  { suffix: '9',      intervals: [0, 2, 4, 7, 10] },
+  { suffix: 'maj9',   intervals: [0, 2, 4, 7, 11] },
+  { suffix: 'm9',     intervals: [0, 2, 3, 7, 10] },
+  { suffix: 'mMaj9',  intervals: [0, 2, 3, 7, 11] },
+  { suffix: '9b5',    intervals: [0, 2, 4, 6, 10] },
+  { suffix: '7b9',    intervals: [0, 1, 4, 7, 10] },
+  { suffix: '7#9',    intervals: [0, 3, 4, 7, 10] },
+  { suffix: 'maj7#9', intervals: [0, 3, 4, 7, 11] },
+
+  // oncenas
+  { suffix: '11',     intervals: [0, 2, 4, 5, 7, 10] },
+  { suffix: 'maj11',  intervals: [0, 2, 4, 5, 7, 11] },
+  { suffix: 'm11',    intervals: [0, 2, 3, 5, 7, 10] },
+  { suffix: '9#11',   intervals: [0, 2, 4, 6, 7, 10] },
+  { suffix: 'maj9#11',intervals: [0, 2, 4, 6, 7, 11] },
+  { suffix: '7#11',   intervals: [0, 4, 6, 7, 10] },
+
+  // trecenas
+  { suffix: '13',     intervals: [0, 2, 4, 5, 7, 9, 10] },
+  { suffix: 'maj13',  intervals: [0, 2, 4, 5, 7, 9, 11] },
+  { suffix: 'm13',    intervals: [0, 2, 3, 5, 7, 9, 10] },
+  { suffix: '13b9',   intervals: [0, 1, 4, 7, 9, 10] },
+  { suffix: '13#9',   intervals: [0, 3, 4, 7, 9, 10] },
+  { suffix: '13#11',  intervals: [0, 2, 4, 6, 7, 9, 10] },
+
+  // alterados
+  { suffix: '7alt',   intervals: [0, 1, 3, 4, 6, 8, 10] },
+  { suffix: '7b5',    intervals: [0, 4, 6, 10] },
+  { suffix: '7#5',    intervals: [0, 4, 8, 10] },
+  { suffix: '7b5b9',  intervals: [0, 1, 4, 6, 10] },
+  { suffix: '7b5#9',  intervals: [0, 3, 4, 6, 10] },
+  { suffix: '7#5b9',  intervals: [0, 1, 4, 8, 10] },
+  { suffix: '7#5#9',  intervals: [0, 3, 4, 8, 10] },
+]
+
+export interface chordResult{
+    name: string      /// Cmaj9
+    root: Note       /// C
+    suffix: string  //maj9
+    notes: Note[]   //["C", "D", "E", "G", "B"]
+}
+
+export function identifyChord(selectedNotes: Note[]): chordResult | null {
+  if (selectedNotes.length < 2) return null
+
+  const semitones = selectedNotes.map(n => NOTES.indexOf(n))
+
+  const sorted = [...CHORD_TYPES].sort(
+    (a, b) => b.intervals.length - a.intervals.length
+  )
+
+  for (const root of semitones) {
+    for (const chordType of sorted) {
+      const required = chordType.intervals.map(i => (root + i) % 12)
+      const allPresent = required.every(r => semitones.includes(r))
+      const noExtra = semitones.every(s => required.includes(s))
+      if (allPresent && noExtra) {
+        return {
+          name: NOTES[root] + chordType.suffix,
+          root: NOTES[root],
+          suffix: chordType.suffix,
+          notes: required.map(r => NOTES[r]),
+        }
+      }
+    }
+  }
+
+  return null
+}
