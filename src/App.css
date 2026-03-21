@@ -3,6 +3,11 @@ h1{
   font-weight: 500;
   margin-bottom: 2rem;
 }
+.app {
+  max-width: 900px;
+  width: 100%;
+  padding: 0 2rem;
+}
 
 .chord-display {
   padding: 1.6rem;
@@ -165,15 +170,16 @@ h1{
 .frets {
   display: flex;
   flex: 1;
-  border-top: 1px solid #333;
+  border-top: 1px solid #3b3b3b;
   position: relative;
 }
 
 .fret-cell {
   flex: 1;
-  height: 36px;
+  min-width: 100px;
+  height: 33px;
   border: none;
-  border-right: 1px solid #333;
+  border-right: 1px solid #696868;
   background: transparent;
   cursor: pointer;
   position: relative;
