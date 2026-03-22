@@ -176,7 +176,6 @@ h1{
 
 .fret-cell {
   flex: 1;
-  min-width: 100px;
   height: 33px;
   border: none;
   border-right: 1px solid #696868;
@@ -381,4 +380,28 @@ h1{
   0%   { top: 0px; }
   50%  { top: -8px; }
   100% { top: 0px; }
+}
+
+
+/* yep media */ 
+
+@media (max-width: 480px) {
+  h1 {
+    font-size: 2rem;
+  }
+
+  .string-indicator {
+    width: 24px;
+    height: 24px;
+    font-size: 10px;
+  }
+
+  .fret-cell {
+    height: 28px;
+  }
+
+  .fret-dot {
+    width: 14px;
+    height: 14px;
+  }
 }
