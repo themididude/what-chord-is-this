@@ -4,9 +4,9 @@ h1{
   margin-bottom: 2rem;
 }
 .app {
-  max-width: 900px;
+  max-width: 780px;
+  margin: 0 auto;
   width: 100%;
-  padding: 0 2rem;
 }
 
 .chord-display {
